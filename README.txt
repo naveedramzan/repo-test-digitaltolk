@@ -1,41 +1,46 @@
-Choose ONE of the following tasks.
-Please do not invest more than 2-4 hours on this.
-Upload your results to a Github repo, for easier sharing and reviewing.
+# Submission by Naveed Ramzan 
+## A test assignment given by DigitalTolk
 
-Thank you and good luck!
+## Suggestions/Recommendations
+### tests/app/Repository/UserRepository.php
+#### My Assessments
+* seems like these are not test created to test repository functions
 
+#### Generic Suggestions
+* There is one major function and its not good approach to make one heavy function
+* it should be divide and test functions to test each small functionality
 
+### refactor/app/Repository/BookingRepository.php
+#### My Assessments
+* Seems like database is at BCNF level
 
-Code to refactor
-=================
-1) app/Http/Controllers/BookingController.php
-2) app/Repository/BookingRepository.php
+#### Generic Suggestions
+* variables should be in camel case
+* code should be more formatted like 
+* common functions should be shifted to BaseRepository like expired, ignored, create, update, delete records etc
+* created_at, updated_at should be timestamp in database strcuture (DDL) 
+* as we are using language for multilingual so all text for subject/alerts should be from languages tables/database values
+* sample formating of query
 
-Code to write tests
-=====================
-3) App/Helpers/TeHelper.php method willExpireAt
-4) App/Repository/UserRepository.php, method createOrUpdate
-
-
-----------------------------
-
-What I expect in your repo.
-
-1, A readme with:   Your thoughts about the code. What makes it amazing code. Or what makes it ok code. Or what makes it terrible code. How would you have done it. Thoughts on formatting. Logic.. 
-
-2.  Refactor it if you feel it needs refactoring. The more love you put into it. The easier for us to asses.  
-
-Make two commits. First commit with original code. Second with your refactor so we can easily trace changes. 
-
-NB: you do not need to set up the code on local and make the web app run. It will not run as its not a complete web app. This is purely to assess you thoughts about code, formatting, logic etc
-
-
-So expected output is a GitHub link with either
-
-1. Readme described above + refactored code 
-OR
-2. Readme described above + a unit test of the code that we have sent
-
-Thank you!
+`$jobs = $cuser->jobs()
+		->with('user.userMeta', 'user.average', 'translatorJobRel.user.average', 'language', 'feedback')
+		->whereIn('status', ['pending', 'assigned', 'started'])
+		->orderBy('due', 'asc')
+		->get()`
 
 
+#### getUsersJobs function 
+* immediate condition should be shifted to query level
+
+#### convertToHoursMins function
+* can be removed as `Carbon` is being used but not for `convertToHoursMins`
+#### bookingExpireNoAccepted function
+* it should be broken into atleast 3,4 parts and based on that conditions / filters should be categorized like getSuperManExpiredNoAcceptedJobs should handle only those conditions which are for superman && expired && no accepted 
+* same broken strategy for alerts like getSuperManAlerts
+
+
+Note: Repository pattern is being introduced to bridge between Controller and Model. It also contains 99% of the business logic and all stuff. Creating tests for controller is OK
+Creating tests for models is OK
+More important is we need to create test for Repository functions as we can achieve by 
+* divide functionalities in to chunks
+* test that functionality in functions
